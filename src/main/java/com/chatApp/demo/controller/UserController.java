@@ -1,7 +1,9 @@
 package com.chatApp.demo.controller;
 
 import com.chatApp.demo.model.User;
+import com.chatApp.demo.model.service.UserService;
 import com.chatApp.demo.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +14,18 @@ import java.util.Objects;
 //Let Spring container know tha this class is a controller
 @RestController
 public class UserController {
-    private UserRepository repository;
+//    private UserRepository repository;
+//
+//
+////   Constructor
+//    public UserController(UserRepository repository) {
+//        this.repository = repository;
+//    }
+    private final UserService userService;
 
-//   Constructor
-    public UserController(UserRepository repository) {
-        this.repository = repository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
-
 
     //Bind the route to a URI path; optional: specify req type (post, put, etc)
     @GetMapping("users/signOut")
@@ -31,14 +38,9 @@ public class UserController {
 
     @PostMapping("users/signIn")
     @ResponseBody
-    public String signIn(@RequestBody String username, String password){
-//    Check if the user supplied username and password are in the db
-//    Array userInstance = repository.findOne(new Query(where ("username").is(username)), User.class
-//    );
-//    if (size(userInstance)>0){
-//
-//        }
-    return "";
+    public ResponseEntity signIn (@RequestBody String username, String password){
+        userService.signIn(username,password);
+        return ResponseEntity.status(200).build();
     }
 
     @PostMapping("users/setUserCredentialsInStore")
