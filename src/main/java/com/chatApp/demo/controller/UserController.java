@@ -6,10 +6,8 @@ import com.chatApp.demo.service.UserService;
 import com.chatApp.demo.utils.Hasher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.bson.json.JsonObject;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +15,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashSet;
+import java.lang.reflect.Array;
+import java.util.List;
 
 //Let Spring container know tha this class is a controller
 @RestController
 public class UserController {
-//    private UserRepository repository;
+    private static String loggedInUsername= "loggedInUsername";
+    private static String loggedInUserId= "loggedInUserId";
+    private static String loggedInHash= "loggedInHash";
+
+
+    //    private UserRepository repository;
 //
 //
 ////   Constructor
@@ -38,23 +42,34 @@ public class UserController {
 
     //Bind the route to a URI path; optional: specify req type (post, put, etc)
     @GetMapping("users/signOut")
-//    Specify that this is a REST service that does not render a view (passes the info to FE instead)
-    @ResponseBody
-    public void signOut (Model model){
+    public ResponseEntity <String> signOut (HttpServletResponse res){
+//        Remove the username cookie
+        Cookie removeUsername= new Cookie(loggedInUsername,"" );
+        removeUsername.setMaxAge(0);
+        res.addCookie(removeUsername);
+
+//        Remove the userId cookie
+        Cookie removeUserId= new Cookie(loggedInUserId,"");
+        removeUserId.setMaxAge(0);
+        res.addCookie(removeUserId);
 
 
+//        Remove the loggedInHash cookie
+        Cookie removeHash= new Cookie(loggedInHash,"" );
+        removeHash.setMaxAge(0);
+        res.addCookie(removeHash);
+//        Respond to client that everything is ok.
+        return ResponseEntity.status(200).build();
     }
 
     @PostMapping("users/signIn")
-    @ResponseBody
     public ResponseEntity <String> signIn (HttpServletResponse res, @RequestBody UserDetails userDetails) throws JsonProcessingException {
 //        @RequestBody String username, String password
-        System.out.println("================");
         String username= userDetails.getUsername();
         String password= userDetails.getPassword();
 
 //      Check if the user instance exists
-        User userInstance= userService.getUserInstanceWithUsernameAndPassword(username,password);
+        User userInstance= userService.findUserByUsernameAndPassword(username,password);
 //      If userInstance is null, the login credentials are not invalid
         if (userInstance==null){
 //            Inform FE accordingly
@@ -66,9 +81,9 @@ public class UserController {
         System.out.println(hashedId);
 //      Else the credentials are valid
 //      Set cookies in FE
-        res.addCookie(new Cookie("loggedInUsername", userInstance.getUsername()));
-        res.addCookie(new Cookie("loggedInUserId", userInstance.getId().toString()));
-        res.addCookie(new Cookie("loggedInHash", hashedId));
+        res.addCookie(new Cookie(loggedInUsername, userInstance.getUsername()));
+        res.addCookie(new Cookie(loggedInUserId, userInstance.getId().toString()));
+        res.addCookie(new Cookie(loggedInHash, hashedId));
 
 //      send the response
 
@@ -83,11 +98,22 @@ public class UserController {
 
     @PostMapping("users/setUserCredentialsInStore")
     @ResponseBody
-    public void setUserCredentialsInStore (){
+    public void setUserCredentialsInStore() {
 
     }
 
 
+    @GetMapping("/users/checkUserAuthentication")
+    @ResponseBody
+    public String checkUserAuthentication(HttpServletRequest req, HttpServletResponse res){
+        final String isUserLoggedIn= "isUserLoggedIn";
+        req.setAttribute(isUserLoggedIn,new RequestObject(false));
+
+        System.out.println( req.getAttribute(isUserLoggedIn));
+        Cookie[] cookies= req.getCookies();
+        System.out.println(cookies);
+    return "Hiiii";
+    }
     // Bind the getAllUsers method to a URI path; optional: specify the request type (e.g. get, put)
 //    @RequestMapping("/user/allUsers")
 ////    Specify that this is a REST service that does not render a view (passes the info to FE instead)
@@ -135,5 +161,16 @@ class UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+}
+
+@Data class RequestObject{
+    private boolean isUserLoggedIn;
+
+    public RequestObject(){
+        this(false);
+    }
+    public RequestObject(boolean isUserLoggedIn) {
+        this.isUserLoggedIn = isUserLoggedIn;
     }
 }
