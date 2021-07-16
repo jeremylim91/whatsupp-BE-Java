@@ -14,9 +14,11 @@ import java.util.concurrent.Future;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 
-    @Async
-    @Query(value = "{ 'username' : ?0, 'password' : ?1 }")
-    User findUserInstanceByUsernameAndPassword(String username, String password);
+//    @Query(value = "{ 'username' : ?0, 'password' : ?1 }")
+//Optional <User> findUserBy
+//    User findUserInstanceByUsernameAndPassword(String username, String password);
+
+    Optional<User> findUserByUsernameAndPassword(String username, String password);
 
     @Async
     @Query(value = "{ 'username' : ?0}")
