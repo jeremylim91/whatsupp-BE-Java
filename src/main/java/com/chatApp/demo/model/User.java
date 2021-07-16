@@ -17,9 +17,9 @@ public class User {
     private String password;
     private String imgUrl;
 
-    public User(String name, String username, String password) {
-        this(name, username, password, "No image provided");
-    }
+//    public User(String name, String username, String password) {
+//        this(name, username, password, "No image provided");
+//    }
     public User(String name, String username, String password, String imgUrl) {
         this.name = name;
         this.username = username;
