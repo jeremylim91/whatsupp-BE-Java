@@ -34,14 +34,14 @@ public class UserService {
                 hashedPassword);
 
 //        If no userInstance found, then user cannot be authenticated
-                if (!userInstance.isPresent()){
-                    return null;
-                }
-//     Else if user instance is found, send back the user Instance
-    return (User) userInstance.get();
+//                if (!userInstance.isPresent()){
+//                    return null;
+//                }
+////     Else if user instance is found, send back the user Instance
+//    return (User) userInstance.get();
+
+        return (User) userInstance.orElse(null);
     }
-
-
 
 }
 
