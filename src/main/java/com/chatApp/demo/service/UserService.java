@@ -22,31 +22,41 @@ public class UserService {
     }
 //=================================================
 //==============Service methods====================
-    public User getUserInstanceWithUsernameAndPassword(String username, String password){
-        System.out.println("========================");
-        System.out.println("username and password in service layer:");
-        System.out.println(username);
-        System.out.println(password);
-        System.out.println("==========================");
+    public User findUserByUsernameAndPassword(String username, String password){
 //        Get a hashed version of the password the user used to sign in
         String hashedPassword= Hasher.createHashedString(password);
-        System.out.println("hashed Password is:");
-        System.out.println(hashedPassword);
-        Optional <User> optionalEntity = userRepository.findById("60efcd7bd8e8926e3c6fff8f");
-        User userInstance= optionalEntity.get();
-//        Get a user instance
-//        List dbResults= userRepository.findAll();
-//        System.out.println(dbResults);
-//     User userInstance= userRepository.findUserInstanceByUsernameAndPassword(username,hashedPassword);
-        System.out.println("userInstance is:");
-//        System.out.println(userInstance);
-//        User userInstance= null;
-//    If user instance does not exist, return null
-     if (userInstance==null)
-     {
-    return null;
+
+//        Optional <User> optionalEntity = userRepository.findById("60efcd7bd8e8926e3c6fff8f");
+//        Optional <User> optionalEntity= userRepository.findUserByUsernameAndPassword(username, hashedPassword);
+
+//       Search db to see if user-provided username and password are legit
+        Optional userInstance= userRepository.findUserByUsernameAndPassword(username,
+                hashedPassword);
+
+//        If no userInstance found, then user cannot be authenticated
+                if (!userInstance.isPresent()){
+                    return null;
+                }
+//     Else if user instance is found, send back the user Instance
+    return (User) userInstance.get();
     }
-//     Inputted credentials point toward a legitimate user. Return true
-    return userInstance;
-    }
+
+
+
 }
+
+
+//============================================
+//============================================
+// const signOut = async (req, res) => {
+//         // remove all the cookies relevant to user auth
+//         res.clearCookie('loggedInHash', {secure: true, sameSite: 'None'});
+//         res.clearCookie('loggedInUserId', {secure: true, sameSite: 'None'});
+//         res.clearCookie('loggedInUsername', {secure: true, sameSite: 'None'});
+//         res.status(200).send('cookies cleared');
+//         };
+//         return {
+//         signIn,
+//         setUserCredentialsInStore,
+//         signOut,
+//         };
