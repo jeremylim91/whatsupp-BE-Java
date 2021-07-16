@@ -21,9 +21,12 @@ import java.util.List;
 //Let Spring container know tha this class is a controller
 @RestController
 public class UserController {
-    private static String loggedInUsername= "loggedInUsername";
-    private static String loggedInUserId= "loggedInUserId";
-    private static String loggedInHash= "loggedInHash";
+    private static final String loggedInUsername= "loggedInUsername";
+    private static final String loggedInUserId= "loggedInUserId";
+    private static final String loggedInHash= "loggedInHash";
+    private String loggedInHashCookie;
+    private String loggedInUserIdCookie;
+
 
 
     //    private UserRepository repository;
@@ -110,8 +113,21 @@ public class UserController {
         req.setAttribute(isUserLoggedIn,new RequestObject(false));
 
         System.out.println( req.getAttribute(isUserLoggedIn));
-        Cookie[] cookies= req.getCookies();
-        System.out.println(cookies);
+
+        Cookie[] allCookies= req.getCookies();
+
+        for (Cookie cookie:allCookies){
+            if(cookie.getName().equals(loggedInHash)){
+                this.loggedInHashCookie= cookie.getValue();
+            }
+            if (cookie.getName().equals(loggedInUserId)){
+                this.loggedInUserIdCookie=cookie.getValue();
+            }
+        }
+//        System.out.println(allCookies[0].getValue());
+        System.out.println(loggedInHashCookie);
+        System.out.println(loggedInUserIdCookie);
+
     return "Hiiii";
     }
     // Bind the getAllUsers method to a URI path; optional: specify the request type (e.g. get, put)
