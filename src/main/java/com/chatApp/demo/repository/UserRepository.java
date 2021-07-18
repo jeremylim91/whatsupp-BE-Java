@@ -20,6 +20,9 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     Optional<User> findUserByUsernameAndPassword(String username, String password);
 
+    Optional <User> findUserById(String userId);
+
+
     @Async
     @Query(value = "{ 'username' : ?0}")
     User findUserInstanceByUsername(String username);

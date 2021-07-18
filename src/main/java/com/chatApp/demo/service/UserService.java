@@ -18,6 +18,7 @@ public class UserService {
     private UserRepository userRepository;
 //==============Constructor=======================
     public UserService(UserRepository userRepository) {
+
         this.userRepository = userRepository;
     }
 //=================================================
@@ -25,38 +26,22 @@ public class UserService {
     public User findUserByUsernameAndPassword(String username, String password){
 //        Get a hashed version of the password the user used to sign in
         String hashedPassword= Hasher.createHashedString(password);
-
 //        Optional <User> optionalEntity = userRepository.findById("60efcd7bd8e8926e3c6fff8f");
 //        Optional <User> optionalEntity= userRepository.findUserByUsernameAndPassword(username, hashedPassword);
-
+        System.out.println("right before db query");
 //       Search db to see if user-provided username and password are legit
         Optional userInstance= userRepository.findUserByUsernameAndPassword(username,
                 hashedPassword);
-
-//        If no userInstance found, then user cannot be authenticated
-                if (!userInstance.isPresent()){
-                    return null;
-                }
-//     Else if user instance is found, send back the user Instance
-    return (User) userInstance.get();
+//      Return the user instance if present (cast it first), else null
+        return (User) userInstance.orElse(null);
     }
 
+    public List<User> findAllUsers(){
+        List<User> allUsers= userRepository.findAll();
 
+        return allUsers;
+
+    }
 
 }
 
-
-//============================================
-//============================================
-// const signOut = async (req, res) => {
-//         // remove all the cookies relevant to user auth
-//         res.clearCookie('loggedInHash', {secure: true, sameSite: 'None'});
-//         res.clearCookie('loggedInUserId', {secure: true, sameSite: 'None'});
-//         res.clearCookie('loggedInUsername', {secure: true, sameSite: 'None'});
-//         res.status(200).send('cookies cleared');
-//         };
-//         return {
-//         signIn,
-//         setUserCredentialsInStore,
-//         signOut,
-//         };
