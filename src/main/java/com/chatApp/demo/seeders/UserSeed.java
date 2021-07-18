@@ -20,8 +20,8 @@ public class UserSeed implements CommandLineRunner {
         this.userRepository.deleteAll();
 
         //       Create users based on User model
-        User user1= new User("Jeremy", "jeremylim_91", "password1");
-        User user2= new User("Joshua", "joshualim_91", "password1");
+        User user1= new User("Jeremy", "jeremylim_91", "05AA9E7784DF47D71B7C2374FD86DBDF0E07FC80BC1DDA0E30714D339E95FD5472C1D0E929E01E8A03F2EA77A929EEBE7C0BA0544761C9CB302036890FAEE9D5");
+        User user2= new User("Joshua", "joshualim_91", "05AA9E7784DF47D71B7C2374FD86DBDF0E07FC80BC1DDA0E30714D339E95FD5472C1D0E929E01E8A03F2EA77A929EEBE7C0BA0544761C9CB302036890FAEE9D5");
 
         //        Put all users into a list
         List<User> allUsers= Arrays.asList(user1,user2);
