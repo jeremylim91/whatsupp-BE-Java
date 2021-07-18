@@ -3,13 +3,14 @@ package com.chatApp.demo.model;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-@Document(collection="users")
-@Data
+//@Data
 //@Document
+@Document(collection="users")
 public class User {
     @Id
     private ObjectId id; //No need to add this field to constructor; the mondgodb driver adds creates a unique id and adds it in automatically
@@ -19,6 +20,7 @@ public class User {
     private String password;
     private String imgUrl;
 
+    @PersistenceConstructor
     public User(String name, String username, String password) {
         this(name, username, password, "No image provided");
     }
