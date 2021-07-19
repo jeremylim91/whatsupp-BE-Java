@@ -30,38 +30,9 @@ public class AuthInterceptor implements HandlerInterceptor {
             HandleCookies.deleteCookies(res, loggedInUserId);
             HandleCookies.deleteCookies(res, loggedInUsername);
 
-
-
-//            new HandleCookies(loggedInHash, res).deleteCookies();
-////            Remove the username cookie
-//            Cookie removeUsername= new Cookie(loggedInUsername,null );
-//            removeUsername.setMaxAge(0);
-////            Indicates to the browswer tt the cookie shld only be sent using a secure protocol (e.g. HTTPS, SSL)
-//            removeUsername.setSecure(true);
-////          Using the HttpOnly flag when generating a cookie helps mitigate the risk of client side script accessing the protected cookie (if the browser supports it)
-//            removeUsername.setHttpOnly(true);
-//            removeUsername.setPath("/");
-//            res.addCookie(removeUsername);
-//
-////        Remove the userId cookie
-//            Cookie removeUserId= new Cookie(loggedInUserId,null);
-//            removeUserId.setMaxAge(0);
-////          Indicates to the browser tt the cookie shld only be sent using a secure protocol (e.g. HTTPS, SSL)
-//            removeUserId.setSecure(true);
-////            . Using the HttpOnly flag when generating a cookie helps mitigate the risk of client side script accessing the protected cookie (if the browser supports it)
-//            removeUserId.setHttpOnly(true);
-//            removeUserId.setPath("/");
-//            res.addCookie(removeUserId);
-//
-////        Remove the loggedInHash cookie
-//            Cookie removeHash= new Cookie(loggedInHash,null );
-//            removeHash.setMaxAge(0);
-////            Indicates to the browser tt the cookie shld only be sent using a secure protocol (e.g. HTTPS, SSL)
-//            removeHash.setSecure(true);
-////          Using the HttpOnly flag when generating a cookie helps mitigate the risk of client side script accessing the protected cookie (if the browser supports it)
-//            removeHash.setHttpOnly(true);
-//            removeHash.setPath("/");
-//            res.addCookie(removeHash);
+        }else {
+            System.out.println("Is Logged in");
+            System.out.println(req.getAttribute("isLoggedIn"));;
         }
         return isAuthenticated;
 };
