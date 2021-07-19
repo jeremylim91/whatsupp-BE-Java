@@ -11,8 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 //https://stackoverflow.com/questions/12730370/spring-data-mongodb-findby-method-for-nested-objects
-@Repository
-public interface UserRepository extends MongoRepository<User, String> {
+@Repository public interface UserRepository extends MongoRepository<User, String> {
 
 //    @Query(value = "{ 'username' : ?0, 'password' : ?1 }")
 //Optional <User> findUserBy

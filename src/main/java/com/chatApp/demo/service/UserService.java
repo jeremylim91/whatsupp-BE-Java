@@ -12,10 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
-@Service
-public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+@Service public class UserService {
+    @Autowired private UserRepository userRepository;
 //==============Constructor=======================
     public UserService(UserRepository userRepository) {
 
@@ -40,7 +38,10 @@ public class UserService {
         List<User> allUsers= userRepository.findAll();
 
         return allUsers;
-
+    }
+    public User findUserById(String userId){
+        Optional userInstance= userRepository.findUserById(userId);
+        return (User) userInstance.orElse(null);
     }
 
 }
