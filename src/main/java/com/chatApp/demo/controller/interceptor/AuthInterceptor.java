@@ -1,20 +1,27 @@
 package com.chatApp.demo.controller.interceptor;
 
 import com.chatApp.demo.utils.HandleCookies;
-import org.springframework.asm.Handle;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.CookieHandler;
 
+@Component
 public class AuthInterceptor implements HandlerInterceptor {
     private static final String loggedInUsername= "loggedInUsername";
     private static final String loggedInUserId= "loggedInUserId";
     private static final String loggedInHash= "loggedInHash";
 
+    @Autowired
+    AuthLogic authLogic;
+
+//    public AuthInterceptor(AuthLogic authLogic) {
+//        this.authLogic = authLogic;
+//    }
+//
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception{
         System.out.println("==========================================");
@@ -22,10 +29,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         System.out.println("==========================================");
 
 
-        boolean isAuthenticated= new AuthLogic().checkUserAuthentication(req, res);
+        boolean isAuthenticated= authLogic.checkUserAuthentication(req, res);
 //    If client proves to be inauthentic, clear all client's cookies
         if (!isAuthenticated){
-            System.out.println("not authenticated");
+            System.out.println("Is not authenticated");
             HandleCookies.deleteCookies(res, loggedInHash);
             HandleCookies.deleteCookies(res, loggedInUserId);
             HandleCookies.deleteCookies(res, loggedInUsername);
