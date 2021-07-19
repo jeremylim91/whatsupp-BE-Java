@@ -8,6 +8,7 @@ import com.chatApp.demo.utils.Hasher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.springframework.asm.Handle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,7 @@ public class UserController {
     @GetMapping("users/signOut")
     public ResponseEntity <String> signOut (HttpServletResponse res){
         //        Remove the username cookie
+        System.out.println("about to delete username cookie");
         HandleCookies.deleteCookies(res, loggedInUsername);
         //        Remove the userId cookie
         HandleCookies.deleteCookies(res, loggedInUserId);
@@ -67,10 +69,12 @@ public class UserController {
         }
 //      Else the credentials are valid
 //      Set cookies in FE
-        res.addCookie(new Cookie(loggedInUsername, userInstance.getUsername()));
-        res.addCookie(new Cookie(loggedInUserId, userInstance.getId().toString()));
+        System.out.println("about to set cookies");
+        HandleCookies.addCookies(res,loggedInUsername, userInstance.getUsername());
+        HandleCookies.addCookies(res, loggedInUserId, userInstance.getId().toString());
         String hashedId= Hasher.createHashedString(userInstance.getId().toString());
-        res.addCookie(new Cookie(loggedInHash, hashedId));
+        HandleCookies.addCookies(res, loggedInHash, hashedId);
+
 
 //      Create the response object
         SignInResponse signInResponse = new SignInResponse(true, userInstance);
@@ -95,7 +99,7 @@ public class UserController {
 
 @PostMapping("users/setUserCredentialsInStore")
     public ResponseEntity <String> setUserCredentialsInStore(HttpServletRequest req, HttpServletResponse res){
-//    req.getAttribute();
+//    System.out.println(req.getAttribute());
     return ResponseEntity.status(200).build();
     }
 
