@@ -32,7 +32,8 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", associated_messages=" + associated_messages +
