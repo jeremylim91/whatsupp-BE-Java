@@ -24,12 +24,17 @@ public class MessageService {
     @Autowired
     RoomService roomService;
 
+
+    public Message findbyId(String messageId){
+        Optional messageInstance =messageRepository.findById(messageId);
+        if (!messageInstance.isPresent()) return null;
+        return (Message) messageInstance.get();
+    }
+
     public List getAllMsgsInRoom (String roomId){
-//        Get hold of the room instance in question
-        System.out.println("roomId in Service is:");
-        System.out.println(roomId);
+//        Get hold of the room instance
         Room roomInstance= roomService.findById(roomId);
-        if (roomInstance.equals(null)) return null;
+        if (roomInstance==null) return null;
 //        Optional <Room> roomOptional= roomRepository.findById( roomId);
 //        System.out.println(roomOptional.toString());
 //        if (roomOptional.isEmpty()) {
@@ -44,13 +49,9 @@ public class MessageService {
         List allAssociatedMsgs= (List) iterableMessages;
         if (allAssociatedMsgs.size()<1){
             System.out.println("No associated messages");
-//            List emptyList= new ArrayList();
-//            System.out.println("Empty list is:");
-//            System.out.println(emptyList.toString());
             return null;
-
         }
-//        List <Message> allMessages= allAssociatedMsgs.
+//       Else there are associated messages; return them
         return allAssociatedMsgs;
     }
 
@@ -62,14 +63,10 @@ public class MessageService {
         messageRepository.insert(newMsg);
 //        Find the current room
         Room currRoom= roomService.findById(roomId);
-        System.out.println("currRoom is:");
-        System.out.println(currRoom);
         if (currRoom.equals(null)) return null;
         currRoom.getAssociated_messages().add(newMsg.getId());
 
         return newMsg;
-
-
     }
 
     public Map getAllMsgsByRoom() {

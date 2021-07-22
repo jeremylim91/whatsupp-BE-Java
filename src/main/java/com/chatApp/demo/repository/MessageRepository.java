@@ -19,4 +19,7 @@ public interface MessageRepository extends MongoRepository<Message, String> {
     Iterable<Message> findAllById(Iterable<String> iterable);
 
     Message insert(Message msgToInsert);
+
+    @Override
+    Optional<Message> findById(String s);
 }

@@ -43,7 +43,7 @@ public class UserController {
     }
 
     //Bind the route to a URI path; optional: specify req type (post, put, etc)
-    @GetMapping("users/signOut")
+    @GetMapping("/users/signOut")
     public ResponseEntity <String> signOut (HttpServletResponse res){
         //        Remove the username cookie
         System.out.println("about to delete username cookie");
@@ -57,7 +57,7 @@ public class UserController {
         return ResponseEntity.status(200).build();
     }
 
-    @PostMapping("users/signIn")
+    @PostMapping("/users/signIn")
     public ResponseEntity <String> signIn (HttpServletResponse res, @RequestBody String userDetails) throws JsonProcessingException {
         System.out.println("Inside the user controller/signIn");
         UserDetails instance= new ObjectMapper().readValue(userDetails, UserDetails.class);
@@ -104,7 +104,7 @@ public class UserController {
         return allUsers;
     }
 
-@PostMapping("users/setUserCredentialsInStore")
+@PostMapping("/users/setUserCredentialsInStore")
     public ResponseEntity <String> setUserCredentialsInStore(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException {
 //    System.out.println(req.getAttribute());
 

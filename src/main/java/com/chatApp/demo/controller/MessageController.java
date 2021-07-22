@@ -28,16 +28,17 @@ public class MessageController {
     @Autowired
     RoomService roomService;
 
-    @GetMapping("/messages/getAllMsgsInRoom")
+    @GetMapping("/messages/getAllMsgsInRoom/")
     public ResponseEntity getAllMsgsInRoom(HttpServletRequest req, HttpServletResponse res, @RequestParam String roomId ) throws JsonProcessingException {
 
         System.out.println("Inside the Room controller");
         System.out.println("Room id is:");
         System.out.println(roomId);
 //       ========For testing=========
-        String roomIdTest= roomService.findOneRoom();
+//        String roomIdTest= roomService.findOneRoom();
+
 //==============================================================
-        List  allMsgsInRoom = messageService.getAllMsgsInRoom(roomIdTest);
+        List  allMsgsInRoom = messageService.getAllMsgsInRoom(roomId);
 
         ObjectMapper objectMapper= new ObjectMapper();
 
