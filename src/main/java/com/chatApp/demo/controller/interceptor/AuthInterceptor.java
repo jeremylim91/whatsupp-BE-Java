@@ -2,6 +2,7 @@ package com.chatApp.demo.controller.interceptor;
 
 import com.chatApp.demo.utils.HandleCookies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,13 +34,18 @@ public class AuthInterceptor implements HandlerInterceptor {
 //    If client proves to be inauthentic, clear all client's cookies
         if (!isAuthenticated){
             System.out.println("Is not authenticated");
+//          Clear all the client's cookies
             HandleCookies.deleteCookies(res, loggedInHash);
             HandleCookies.deleteCookies(res, loggedInUserId);
             HandleCookies.deleteCookies(res, loggedInUsername);
 
+//          Create msg to client
+            res.setStatus(500);
+            ResponseEntity.status(500).body("Sorry, we could not verify your login credentials. Please login again");
+
         }else {
-            System.out.println("Is Logged in");
-            System.out.println(req.getAttribute("isLoggedIn"));;
+            System.out.println("Interceptor status: User is authentic");
+
         }
         return isAuthenticated;
 };
