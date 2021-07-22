@@ -4,16 +4,18 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Document(collection="messages")
 public class Message {
     @Id
     private ObjectId id;
     private String message;
     private String username;
-    private java.util.Date timeStamp;
-    private ObjectId room_id;
+    private LocalDateTime timeStamp;
+    private String room_id;
 
-    public Message(String message, String username, java.util.Date timeStamp, ObjectId room_id) {
+    public Message(String message, String username, LocalDateTime timeStamp, String room_id) {
         this.message = message;
         this.username = username;
         this.timeStamp = timeStamp;
@@ -51,19 +53,19 @@ public class Message {
         this.username = username;
     }
 
-    public java.util.Date getTimeStamp() {
+    public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(java.util.Date timeStamp) {
+    public void setTimeStamp(LocalDateTime timeStamp) {
         this.timeStamp = timeStamp;
     }
 
-    public ObjectId getRoom_id() {
+    public String getRoom_id() {
         return room_id;
     }
 
-    public void setRoom_id(ObjectId room_id) {
+    public void setRoom_id(String room_id) {
         this.room_id = room_id;
     }
 }
