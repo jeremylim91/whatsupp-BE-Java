@@ -10,6 +10,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,13 +54,8 @@ public class MessageController {
         return ResponseEntity.status(200).body(allMsgsByRoom);
     }
 
-    @MessageMapping
-    @SendTo
-    public Message addMsgToDb (String incomingMsg) throws JsonProcessingException {
-        Message newMsg= messageService.create(incomingMsg);
-        if (newMsg.equals(null)) return null;
 
-        return newMsg;
-    }
+
+
 
 }
