@@ -1,6 +1,6 @@
 package com.chatApp.demo.model;
 
-import org.bson.types.ObjectId;
+import com.chatApp.demo.seeders.AvatarCreator;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,12 +9,19 @@ import java.util.ArrayList;
 @Document(collection="rooms")
 public class Room {
     @Id
-    private ObjectId id;
+    private String id;
     private String name;
     private String image;
     private String createdBy;
     private ArrayList associated_messages;
 
+
+    public Room (){
+        this ("", "", "", new ArrayList());
+    }
+    public Room (String name, String createdBy){
+        this(name, new AvatarCreator().getGridyImg(name), createdBy, new ArrayList());
+    }
     public Room(String name, String image, String createdBy, ArrayList associated_messages) {
         this.name = name;
         this.image = image;
@@ -32,7 +39,7 @@ public class Room {
                 '}';
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
