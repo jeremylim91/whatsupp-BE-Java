@@ -7,7 +7,10 @@ import com.chatApp.demo.utils.HandleCookies;
 import com.chatApp.demo.utils.Hasher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
+import netscape.javascript.JSObject;
+import org.bson.json.JsonObject;
 import org.springframework.asm.Handle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,9 +29,9 @@ import java.util.*;
 //Let Spring container know tha this class is a controller
 @RestController
 public class UserController {
-    private static final String loggedInUsername= "loggedInUsername";
-    private static final String loggedInUserId= "loggedInUserId";
-    private static final String loggedInHash= "loggedInHash";
+//    private static final String loggedInUsername= "loggedInUsername";
+//    private static final String loggedInUserId= "loggedInUserId";
+//    private static final String loggedInHash= "loggedInHash";
     private  String loggedInHashCookie= null;
     private  String loggedInUserIdCookie= null;
 
@@ -44,21 +47,25 @@ public class UserController {
     public ResponseEntity <String> signOut (HttpServletResponse res){
         //        Remove the username cookie
         System.out.println("about to delete username cookie");
-        HandleCookies.deleteCookies(res, loggedInUsername);
+        HandleCookies.deleteCookies(res, CookieNames.loggedInUsername);
         //        Remove the userId cookie
-        HandleCookies.deleteCookies(res, loggedInUserId);
+        HandleCookies.deleteCookies(res, CookieNames.loggedInUserId);
         //        Remove the loggedInHash cookie
-        HandleCookies.deleteCookies(res, loggedInHash);
+        HandleCookies.deleteCookies(res, CookieNames.loggedInHash);
 
         //        Respond to client that everything is ok.
         return ResponseEntity.status(200).build();
     }
 
     @PostMapping("users/signIn")
-    public ResponseEntity <String> signIn (HttpServletResponse res, @RequestBody UserDetails userDetails) throws JsonProcessingException {
+    public ResponseEntity <String> signIn (HttpServletResponse res, @RequestBody String userDetails) throws JsonProcessingException {
+        System.out.println("Inside the user controller/signIn");
+        UserDetails instance= new ObjectMapper().readValue(userDetails, UserDetails.class);
+        String username= instance.getUsername();
+        String password= instance.getPassword();
         //        @RequestBody String username, String password
-        String username= userDetails.getUsername();
-        String password= userDetails.getPassword();
+//        String username= userDetails.getUsername();
+//        String password= userDetails.getPassword();
 
 //      Check if the user instance exists
         User userInstance= userService.findUserByUsernameAndPassword(username,password);
@@ -70,10 +77,10 @@ public class UserController {
 //      Else the credentials are valid
 //      Set cookies in FE
         System.out.println("about to set cookies");
-        HandleCookies.addCookies(res,loggedInUsername, userInstance.getUsername());
-        HandleCookies.addCookies(res, loggedInUserId, userInstance.getId().toString());
+        HandleCookies.addCookies(res,CookieNames.loggedInUsername, userInstance.getUsername());
+        HandleCookies.addCookies(res, CookieNames.loggedInUserId, userInstance.getId().toString());
         String hashedId= Hasher.createHashedString(userInstance.getId().toString());
-        HandleCookies.addCookies(res, loggedInHash, hashedId);
+        HandleCookies.addCookies(res, CookieNames.loggedInHash, hashedId);
 
 
 //      Create the response object
@@ -98,35 +105,14 @@ public class UserController {
     }
 
 @PostMapping("users/setUserCredentialsInStore")
-    public ResponseEntity <String> setUserCredentialsInStore(HttpServletRequest req, HttpServletResponse res){
+    public ResponseEntity <String> setUserCredentialsInStore(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException {
 //    System.out.println(req.getAttribute());
-    return ResponseEntity.status(200).build();
+
+    ObjectMapper objectMapper= new ObjectMapper();
+    String responseObject= objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(req.getAttribute("requestObject"));
+    return ResponseEntity.status(200).body(responseObject);
     }
 
 }
-class UserDetails {
-    private String username;
-    private String password;
 
-    public UserDetails(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-}
 
