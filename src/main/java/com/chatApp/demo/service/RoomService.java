@@ -50,7 +50,6 @@ public class RoomService {
     }
 
     public void create(String roomDetails) throws JsonProcessingException {
-
 //        ObjectMapper mapper = new ObjectMapper();
 //        TypeReference<HashMap<String, String>> typeRef= new TypeReference<HashMap<String, String>>() {
 //        };
@@ -60,7 +59,6 @@ public class RoomService {
         Room newRoom= new Room(roomName, userId);
         roomRepository.insert(newRoom);
         System.out.println("Finished inserting room");
-
 
 //        System.out.println("Map to string is:");
 //        System.out.println(map.get("userId"));

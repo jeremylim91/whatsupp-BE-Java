@@ -1,7 +1,9 @@
 package com.chatApp.demo.socketController;
 
 import com.chatApp.demo.model.Message;
+import com.chatApp.demo.model.Room;
 import com.chatApp.demo.service.MessageService;
+import com.chatApp.demo.service.RoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +16,17 @@ import org.springframework.stereotype.Controller;
 public class SocketController {
     @Autowired
     MessageService messageService;
+    @Autowired
+    RoomService roomService;
 
-//    @MessageMapping("/testingRoute")
-//    @SendTo("/testingRoute")
-//    public Message addMsgToDb (@Payload String incomingMsg) throws JsonProcessingException {
-//        System.out.println("this is the chattttt");
-//        System.out.println(incomingMsg);
-//        Message newMsg= messageService.create(incomingMsg);
-//        if (newMsg.equals(null)) return null;
 //
-//        return newMsg;
+//    @MessageMapping("/createRoom")
+//    @SendTo("/wsFromServer/createRoom")
+//    public String createRoom (@Payload String data) throws JsonProcessingException {
+//    //roomService.create returns a boolean
+//        roomService.create(data);
+//        ObjectMapper objectMapper= new ObjectMapper();
+//        return "updateRoomsList";
 //    }
 
     @MessageMapping("/addMsgToDb")
