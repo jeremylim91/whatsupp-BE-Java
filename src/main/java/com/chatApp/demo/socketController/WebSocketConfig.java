@@ -22,9 +22,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry config){
 //   We enable an in-memory message broker to carry the messages back to the client on
 //   destinations prefixed with “/topic”
-    config.enableSimpleBroker("/topic");
+    config.enableSimpleBroker("/wsFromServer");
 //    We complete our simple configuration by designating the “/app” prefix to filter destinations targeting application annotated methods (via @MessageMapping).
-    config.setApplicationDestinationPrefixes("/app");
+    config.setApplicationDestinationPrefixes("/wsToServer");
 }
 @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
