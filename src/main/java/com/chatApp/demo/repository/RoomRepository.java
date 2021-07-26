@@ -21,4 +21,7 @@ public interface RoomRepository extends MongoRepository <Room, String> {
     List<Room> findAll();
 
     Room insert(Room roomToInsert);
+
+    @Override
+    <S extends Room> S save(S s);
 }
