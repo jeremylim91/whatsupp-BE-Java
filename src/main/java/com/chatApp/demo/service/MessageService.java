@@ -59,13 +59,16 @@ public class MessageService {
         String roomId= HandleJson.deserializeToString(incomingMsg, "roomId");
         String msgContent= HandleJson.deserializeToString(incomingMsg, "msgContent");
         String username= HandleJson.deserializeToString(incomingMsg, "username");
-        Message newMsg= new Message(msgContent, username, LocalDateTime.now(), roomId);
+        Message newMsg= new Message(new ObjectId().toString(),msgContent, username, LocalDateTime.now(), roomId);
         messageRepository.insert(newMsg);
 //        Find the current room
         Room currRoom= roomService.findById(roomId);
         if (currRoom.equals(null)) return null;
+        System.out.println("newMsg is:");
+        System.out.println(newMsg);
         currRoom.getAssociated_messages().add(newMsg.getId());
-
+        roomService.save(currRoom);
+        System.out.println("finished updating currRoom to db");
         return newMsg;
     }
 
@@ -73,7 +76,6 @@ public class MessageService {
 //      Get a list of all the rooms
         List <Room> allRooms= roomService.findAll();
         System.out.println(" allRooms Is;");
-
         System.out.println(allRooms);
         Map <String, List> responseObj= new HashMap<String, List>() {
         };
@@ -82,8 +84,13 @@ public class MessageService {
 
             Iterable <Message> iterableMsgs= messageRepository.findAllById(room.getAssociated_messages());
             List <Message> allAssociatedMsgs= (List) iterableMsgs;
+            System.out.println("allAssociatedMsgs");
+            System.out.println(allAssociatedMsgs);
             if (allAssociatedMsgs.size()<1)return;
+            System.out.println("roomId is:");
+            System.out.println(roomId);
             responseObj.put(roomId, allAssociatedMsgs);
+
         });
         System.out.println("responseObj is: ");
         System.out.println(responseObj);
