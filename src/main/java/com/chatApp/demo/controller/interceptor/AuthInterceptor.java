@@ -41,7 +41,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
 //          Create msg to client
             res.setStatus(500);
-            ResponseEntity.status(500).body("Sorry, we could not verify your login credentials. Please login again");
+            ResponseEntity.status(500).body("unauthenticated");
 
         }else {
             System.out.println("Interceptor status: User is authentic");
