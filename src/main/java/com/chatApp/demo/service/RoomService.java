@@ -111,4 +111,8 @@ public class RoomService {
         System.out.println(dataToReturnToClient);
     return dataToReturnToClient;
     }
+
+    public void save(Room room){
+        roomRepository.save(room);
+    }
 }
