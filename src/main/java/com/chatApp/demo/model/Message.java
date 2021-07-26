@@ -2,6 +2,7 @@ package com.chatApp.demo.model;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -9,13 +10,19 @@ import java.time.LocalDateTime;
 @Document(collection="messages")
 public class Message {
     @Id
-    private ObjectId id;
+    private String id;
     private String message;
     private String username;
     private LocalDateTime timeStamp;
     private String room_id;
 
-    public Message(String message, String username, LocalDateTime timeStamp, String room_id) {
+    public Message(String message, String username, LocalDateTime timeStamp, String room_id){
+        this(new ObjectId().toString(), message, username, timeStamp, room_id);
+    }
+
+    @PersistenceConstructor
+    public Message(String id, String message, String username, LocalDateTime timeStamp, String room_id) {
+        this.id= id;
         this.message = message;
         this.username = username;
         this.timeStamp = timeStamp;
@@ -33,7 +40,7 @@ public class Message {
                 '}';
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
