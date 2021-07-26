@@ -3,6 +3,7 @@ package com.chatApp.demo.seeders;
 import com.chatApp.demo.model.Message;
 import com.chatApp.demo.model.Room;
 import com.chatApp.demo.repository.MessageRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,17 +47,17 @@ public class MessageSeed {
         });
 
         //       Create messages based on Message model. Add each of them to a list
-        allMessages.add(new Message("Hey bro how's it going", jeremyLim91, LocalDateTime.now().minusMinutes(100), devHangoutObjId));
-        allMessages.add(new Message("Hey I'm good! how're your?", joshuaLim91, LocalDateTime.now().minusMinutes(90), devHangoutObjId));
-        allMessages.add(new Message("Nth much going on.", jeremyLim91, LocalDateTime.now().minusMinutes(20), devHangoutObjId));
-        allMessages.add( new Message("Just wanted to catchup with you on Dev work! What projects you working on lately?", jeremyLim91, LocalDateTime.now().minusMinutes(19), devHangoutObjId));
+        allMessages.add(new Message(new ObjectId().toString(), "Hey bro how's it going", jeremyLim91, LocalDateTime.now().minusMinutes(100), devHangoutObjId));
+        allMessages.add(new Message(new ObjectId().toString(),"Hey I'm good! how're your?", joshuaLim91, LocalDateTime.now().minusMinutes(90), devHangoutObjId));
+        allMessages.add(new Message(new ObjectId().toString(),"Nth much going on.", jeremyLim91, LocalDateTime.now().minusMinutes(20), devHangoutObjId));
+        allMessages.add( new Message(new ObjectId().toString(),"Just wanted to catchup with you on Dev work! What projects you working on lately?", jeremyLim91, LocalDateTime.now().minusMinutes(19), devHangoutObjId));
 
-        allMessages.add(new Message("What time are we meeting and where?", josephpok91, LocalDateTime.now().minusMinutes(200), cyclingBuddiesObjId));
-        allMessages.add(new Message("3am at the usual spot!", jeremyLim91, LocalDateTime.now().minusMinutes(186), cyclingBuddiesObjId));
-        allMessages.add(new Message("okie cool thanks", josephpok91, LocalDateTime.now().minusMinutes(180), cyclingBuddiesObjId));
-        allMessages.add(new Message("Sorry I'm new can I clarify where the 'usual spot' refers to?", joshuaLim91, LocalDateTime.now().minusMinutes(120), cyclingBuddiesObjId));
-        allMessages.add(new Message("Kranji, by the coffee shop' refers to?", josephpok91, LocalDateTime.now().minusMinutes(118), cyclingBuddiesObjId));
-        allMessages.add(new Message("Ok got it, thanks bro", joshuaLim91, LocalDateTime.now().minusMinutes(89), cyclingBuddiesObjId));
+        allMessages.add(new Message(new ObjectId().toString(),"What time are we meeting and where?", josephpok91, LocalDateTime.now().minusMinutes(200), cyclingBuddiesObjId));
+        allMessages.add(new Message(new ObjectId().toString(),"3am at the usual spot!", jeremyLim91, LocalDateTime.now().minusMinutes(186), cyclingBuddiesObjId));
+        allMessages.add(new Message(new ObjectId().toString(),"okie cool thanks", josephpok91, LocalDateTime.now().minusMinutes(180), cyclingBuddiesObjId));
+        allMessages.add(new Message(new ObjectId().toString(),"Sorry I'm new can I clarify where the 'usual spot' refers to?", joshuaLim91, LocalDateTime.now().minusMinutes(120), cyclingBuddiesObjId));
+        allMessages.add(new Message(new ObjectId().toString(),"Kranji, by the coffee shop' refers to?", josephpok91, LocalDateTime.now().minusMinutes(118), cyclingBuddiesObjId));
+        allMessages.add(new Message(new ObjectId().toString(),"Ok got it, thanks bro", joshuaLim91, LocalDateTime.now().minusMinutes(89), cyclingBuddiesObjId));
 
         //        Bulk insert the list of users
         messageRepository.insert(allMessages);
