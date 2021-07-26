@@ -1,24 +1,17 @@
 package com.chatApp.demo.controller;
 
 
-import com.chatApp.demo.model.Message;
 import com.chatApp.demo.service.MessageService;
-import com.chatApp.demo.service.RoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +19,7 @@ import java.util.Map;
 public class MessageController {
     @Autowired
     MessageService messageService;
-    @Autowired
-    RoomService roomService;
+
 
     @GetMapping("/messages/getAllMsgsInRoom/")
     public ResponseEntity getAllMsgsInRoom(HttpServletRequest req, HttpServletResponse res, @RequestParam String roomId ) throws JsonProcessingException {
@@ -48,14 +40,31 @@ public class MessageController {
     }
 
     @GetMapping("/messages/allMsgsByRoom")
-    public ResponseEntity getAllMsgsByRoom(HttpServletRequest req, HttpServletResponse res){
+    public ResponseEntity getAllMsgsByRoom(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException {
         Map allMsgsByRoom= messageService.getAllMsgsByRoom();
+        System.out.println("allMsgsByRoom isss:");
+        ObjectMapper mapper= new ObjectMapper();
+        String stringifiedAllMsgsByRoom= mapper.writerWithDefaultPrettyPrinter().writeValueAsString(allMsgsByRoom);
+        System.out.println(stringifiedAllMsgsByRoom);
 
-        return ResponseEntity.status(200).body(allMsgsByRoom);
+        return ResponseEntity.status(200).body(stringifiedAllMsgsByRoom);
     }
 
 
 
-
+//    @MessageMapping("/addMsgToDb")
+//    @SendTo("/wsFromServer/addMsgToDb")
+//    public String addMsgToDb (@Payload String incomingMsg) throws JsonProcessingException {
+//        System.out.println("================================");
+//        System.out.println("this is the chattttt");
+//        System.out.println("================================");
+//
+//        System.out.println(incomingMsg);
+//        Message newMsg= messageService.create(incomingMsg);
+//        if (newMsg.equals(null)) return null;
+//        ObjectMapper objectMapper= new ObjectMapper();
+//        String jsonNewMsg= objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(newMsg);
+//        return jsonNewMsg;
+//    }
 
 }
