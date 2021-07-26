@@ -38,10 +38,4 @@ public class RoomController {
         return ResponseEntity.status(200).build();
     }
 
-    @MessageMapping("/createRoom")
-    @SendTo("updateRoomList")
-    public String createMessage (String incomingMsg) throws Exception{
-        roomService.create(incomingMsg);
-        return (null);
-    }
 }
