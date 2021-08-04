@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +22,8 @@ public class MessageController {
     MessageService messageService;
 
 
-    @GetMapping("/messages/getAllMsgsInRoom/")
-    public ResponseEntity getAllMsgsInRoom(HttpServletRequest req, HttpServletResponse res, @RequestParam String roomId ) throws JsonProcessingException {
+    @GetMapping("/messages/getAllMsgsInRoom/{roomId}")
+    public ResponseEntity getAllMsgsInRoom(HttpServletRequest req, HttpServletResponse res, @PathVariable String roomId ) throws JsonProcessingException {
 
         System.out.println("Inside the Room controller");
         System.out.println("Room id is:");
@@ -42,7 +43,7 @@ public class MessageController {
     @GetMapping("/messages/allMsgsByRoom")
     public ResponseEntity getAllMsgsByRoom(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException {
         Map allMsgsByRoom= messageService.getAllMsgsByRoom();
-        System.out.println("allMsgsByRoom isss:");
+        System.out.println("allMsgsByRoom is:");
         ObjectMapper mapper= new ObjectMapper();
         String stringifiedAllMsgsByRoom= mapper.writerWithDefaultPrettyPrinter().writeValueAsString(allMsgsByRoom);
         System.out.println(stringifiedAllMsgsByRoom);
